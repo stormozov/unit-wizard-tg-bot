@@ -62,7 +62,12 @@ class UnitConverter:
 
         try:
             result = value * (from_factor / to_factor)
-            return round(result, 6), None
+
+            formatted_result = f'{result:,.2f}'.replace(',', ' ')
+            if formatted_result.endswith('.00'):
+                formatted_result = formatted_result[:-3]
+
+            return formatted_result, None
         except Exception as e:
             logging.error('Ошибка конвертации: %s', str(e))
             return None, 'Ошибка конвертации'
