@@ -61,7 +61,9 @@ def register_handlers(bot: telebot.TeleBot) -> None:
         """
         try:
             value, from_unit, to_unit = parse_input(message.text)
-            result, error = UnitConverter().convert(value, from_unit, to_unit)
+            result, error = UnitConverter().convert(
+                float(value.replace(' ', '')), from_unit, to_unit
+                )
 
             response = (
                 f'❌ Ошибка: {error}'

@@ -30,9 +30,7 @@ def parse_input(text: str) -> tuple[float, str, str]:
 
     :raise ValueError: Неверный формат запроса
     """
-
-    value, from_unit, to_unit = extract_units(text)
-    return value, from_unit, to_unit
+    return extract_units(text)
 
 
 def extract_units(text: str) -> tuple[float, str, str]:
@@ -48,7 +46,7 @@ def extract_units(text: str) -> tuple[float, str, str]:
     :raise ValueError: Неверный формат запроса
     """
 
-    number_pattern = r'^(\d+\.?\d*)'
+    number_pattern = r'^([\d\s]+\.?\d*)'
     first_word_pattern = r'\s+([a-zA-Zа-яА-ЯёЁ]+)'
     second_word_pattern = r'\s+(?:в|to)\s+([a-zA-Zа-яА-ЯёЁ]+)$'
 
@@ -63,4 +61,4 @@ def extract_units(text: str) -> tuple[float, str, str]:
             'Используйте команду /help для справки.'
         )
 
-    return float(match.group(1)), match.group(2).strip(), match.group(3).strip()
+    return match.group(1), match.group(2).strip(), match.group(3).strip()
