@@ -6,8 +6,10 @@ from bot.configs.units import UNITS
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s'
     )
+
+LOGGER = logging.getLogger(__name__)
 
 
 class UnitConverter:
@@ -70,7 +72,7 @@ class UnitConverter:
 
             return formatted_result, None
         except (ZeroDivisionError, ArithmeticError, KeyError) as e:
-            logging.error('Ошибка конвертации: %s', str(e))
+            LOGGER.error('Ошибка конвертации: %s', str(e))
             return None, f'Ошибка конвертации: {str(e)}'
 
     def _find_unit(self, unit_name: str) -> tuple[str | None, str | None]:
@@ -88,5 +90,7 @@ class UnitConverter:
                     lower_alias = alias.lower()
                     if lower_alias not in alias_map:
                         alias_map[lower_alias] = (unit_key, category)
+
+        LOGGER.info('Создана хэш-таблица для быстрого поиска алиасов')
 
         return alias_map

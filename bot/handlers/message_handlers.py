@@ -11,8 +11,10 @@ from bot.tools.unit_converter import UnitConverter
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s'
     )
+
+LOGGER = logging.getLogger(__name__)
 
 
 def register_handlers(bot: telebot.TeleBot) -> None:
@@ -26,6 +28,8 @@ def register_handlers(bot: telebot.TeleBot) -> None:
     :param bot (telebot.TeleBot): Экземпляр бота, который будет использоваться 
     для регистрации обработчиков.
     """
+
+    converter = UnitConverter()
 
     @bot.message_handler(commands=['start'])
     def send_start(message: types.Message) -> None:
@@ -61,7 +65,7 @@ def register_handlers(bot: telebot.TeleBot) -> None:
         """
         try:
             value, from_unit, to_unit = parse_input(message.text)
-            result, error = UnitConverter().convert(
+            result, error = converter.convert(
                 float(value.replace(' ', '')), from_unit, to_unit
                 )
 
@@ -74,7 +78,7 @@ def register_handlers(bot: telebot.TeleBot) -> None:
         except ValueError as e:
             response = f'❌ Ошибка значения: {str(e)}'
         except Exception as e:
-            logging.error('Ошибка обработки сообщения: %s', str(e))
+            LOGGER.error('Ошибка обработки сообщения: %s', str(e))
             response = (
                 '⚠ Произошла ошибка. Проверьте формат запроса. '
                 'Команда /help для справки.'
