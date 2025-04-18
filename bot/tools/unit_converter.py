@@ -24,6 +24,7 @@ class UnitConverter:
 
     def __init__(self) -> None:
         self._units = UNITS
+        self._alias_map = self._build_alias_map()
 
     def convert(self, value: float, from_unit: str, to_unit: str) \
         -> tuple[float | None, str | None]:
@@ -68,34 +69,24 @@ class UnitConverter:
                 formatted_result = formatted_result[:-3]
 
             return formatted_result, None
-        except Exception as e:
+        except (ZeroDivisionError, ArithmeticError, KeyError) as e:
             logging.error('Ошибка конвертации: %s', str(e))
-            return None, 'Ошибка конвертации'
+            return None, f'Ошибка конвертации: {str(e)}'
 
     def _find_unit(self, unit_name: str) -> tuple[str | None, str | None]:
-        """Поиск единицы измерения по названию
+        """Поиск единицы измерения через хэш-таблицу."""
+        return self._alias_map.get(unit_name.lower(), (None, None))
 
-        :param unit_name: Название единицы измерения
+    def _build_alias_map(self) -> dict[str, tuple[str, str]]:
+        """Создание словаря (хэш-таблицы) для быстрого поиска алиасов."""
 
-        :return: Кортеж из двух элементов:
-        
-            - `unit_key` (`str` или `None`): Ключ единицы измерения
-            - `category` (`str` или `None`): Категория единицы измерения
-
-        ### Например:
-        >>> converter = UnitConverter()
-        >>> converter.find_unit('метр')
-        ('m', 'length')
-
-        >>> converter.find_unit('неизвестная_единица')
-        (None, None)
-        """
-
-        unit_name = unit_name.lower()
+        alias_map = {}
 
         for category, units in self._units.items():
             for unit_key, data in units.items():
-                if unit_name in [alias.lower() for alias in data['aliases']]:
-                    return unit_key, category
+                for alias in data['aliases']:
+                    lower_alias = alias.lower()
+                    if lower_alias not in alias_map:
+                        alias_map[lower_alias] = (unit_key, category)
 
-        return None, None
+        return alias_map
