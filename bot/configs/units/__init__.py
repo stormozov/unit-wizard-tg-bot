@@ -5,7 +5,7 @@
 измерения представлена в виде словаря, содержащего коэффициент преобразования 
 в базовую единицу и список синонимов (алиасов) для удобства использования.
 
-Лоступен общий словарь `UNITS`, содержащий все единицы измерения. 
+Доступен общий словарь `UNITS`, содержащий все единицы измерения. 
 Также можно подключить каждый отдельный словарь.
 
 Импорт общего словаря: `from bot.configs.units import UNITS`.
@@ -51,19 +51,52 @@ UNITS = {
 ```
 """
 
-from .units_length import UNITS_LENGTH
-from .units_mass import UNITS_MASS
-from .units_time import UNITS_TIME
+from .units_distance import UNITS_DISTANCE_RU, UNITS_DISTANCE_EN
+from .units_mass import UNITS_MASS_RU, UNITS_MASS_EN
+from .units_time import (
+    UNITS_TIME_CELENDAR, UNITS_TIME_REGULAR, UNITS_TIME_ULTRA_SMALL
+    )
+
+# Общий словарь со всеми ед. измерения массы
+UNITS_MASS = {
+    **UNITS_MASS_RU,
+    **UNITS_MASS_EN,
+    }
+
+# Общий словарь со всеми ед. измерения расстояния
+UNITS_DISTANCE = {
+    **UNITS_DISTANCE_RU,
+    **UNITS_DISTANCE_EN,
+    }
+
+# Общий словарь со всеми ед. измерения времени
+UNITS_TIME = {
+    **UNITS_TIME_CELENDAR,
+    **UNITS_TIME_REGULAR,
+    **UNITS_TIME_ULTRA_SMALL,
+    }
 
 # Общий словарь, со всеми единицами измерения
 UNITS = {
-    'length': UNITS_LENGTH,
+    'distance': UNITS_DISTANCE,
     'mass': UNITS_MASS,
     'time': UNITS_TIME,
     }
 
 __all__ = [
-    'UNITS_LENGTH', 
+    # Расстояния
+    'UNITS_DISTANCE', 
+    'UNITS_DISTANCE_RU',
+    'UNITS_DISTANCE_EN',
+
+    # Масса
     'UNITS_MASS', 
-    'UNITS_TIME'
+    'UNITS_MASS_RU',
+    'UNITS_MASS_EN',
+
+    # Время
+    'UNITS_TIME',
+    'UNITS_TIME_CELENDAR',
+    'UNITS_TIME_REGULAR',
+    'UNITS_TIME_ULTRA_SMALL'
     ]
