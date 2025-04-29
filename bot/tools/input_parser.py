@@ -61,4 +61,5 @@ def extract_units(text: str) -> tuple[float, str, str]:
             'Используйте команду /help для справки.'
         )
 
-    return match.group(1), match.group(2).strip(), match.group(3).strip()
+    number = float(match.group(1).replace(' ', ''))
+    return number, match.group(2).strip(), match.group(3).strip()

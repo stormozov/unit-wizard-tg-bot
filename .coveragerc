@@ -1,0 +1,8 @@
+[run]
+omit = tests/*
+       bot\bot.py
+       bot\handlers\message_handlers.py
+       bot\configs\messages.py
+
+[html]
+directory = coverage_html_report

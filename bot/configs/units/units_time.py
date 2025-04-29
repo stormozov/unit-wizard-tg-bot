@@ -102,7 +102,7 @@ UNITS_TIME_ULTRA_SMALL = {
     'fs': {
         'factor': 0.000000000000001,
         'aliases': [
-            'fs', 'femtosecond', 'attoseconds', 'фс', 'фемтосекунда', 
+            'fs', 'femtosecond', 'femtoseconds', 'фс', 'фемтосекунда', 
             'фемтосекунды', 'фемтосекунд', 'фемтосекундах'
             ]
     },
